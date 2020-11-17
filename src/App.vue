@@ -1,22 +1,20 @@
 <template>
   <div id="app">
-    <Navbar/>
-    <router-view/>
+    <Navbar />
+    <router-view />
   </div>
 </template>
 
 
 <script>
+import Navbar from "./components/Navbar.vue";
 
-  import Navbar from './components/Navbar.vue';
-
-  export default {
-    name: 'App',
-    components: {
-      Navbar
-    }
-  }
-
+export default {
+  name: "App",
+  components: {
+    Navbar,
+  },
+};
 </script>
 
 
@@ -39,6 +37,4 @@
   max-width: 1280px;
   width: 90%;
 }
-
-
 </style>

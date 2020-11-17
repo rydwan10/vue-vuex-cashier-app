@@ -23,7 +23,6 @@ export default {
 
 <style scoped>
 .navbar {
-  /* background: rgb(202, 210, 253); */
   background: #2c3e50;
 }
 
@@ -59,11 +58,11 @@ export default {
 }
 
 button {
-  padding: 12px 25px;
+  padding: 10px 24px;
   background-color: #3357fa;
   color: #ffffff;
   border: none;
-  border-radius: 50px;
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.5s ease 0s;
   font-weight: 600;

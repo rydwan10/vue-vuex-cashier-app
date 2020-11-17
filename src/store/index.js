@@ -53,11 +53,18 @@ export default new Vuex.Store({
         total: 2000,
         createdAt: '2020-11-01'
       }
-    ]
+    ],
+    searchKeyword: ''
   },
   getters: {
-    getAllProducts: ({ products }) => {
-      return products
+    getAllProducts: ({ products, searchKeyword }) => {
+      if (searchKeyword == '') {
+        return products
+      } else {
+        return products.filter(product => {
+          return product.name.toLowerCase().includes(searchKeyword)
+        })
+      }
     },
     getAllCart: ({ cart }) => {
       return cart
@@ -82,6 +89,14 @@ export default new Vuex.Store({
         return item.id !== payload
       });
       state.cart = [...newCart]
+    },
+    updateSearchQuery(state, payload) {
+      state.searchKeyword = payload
+    },
+    clearCart(state, payload) {
+      if (window.confirm("Clear Cart?")) {
+        state.cart = [];
+      }
     }
   },
   actions: {
@@ -90,6 +105,13 @@ export default new Vuex.Store({
     },
     DELETE_ITEM_FROM_CART: (context, payload) => {
       context.commit('deleteItemFromCart', payload)
+    },
+    UPDATE_SEARCH_KEYWORD: (context, payload) => {
+      context.commit('updateSearchQuery', payload)
+      console.log(context.state.searchKeyword);
+    },
+    CLEAR_CART: (context, payload) => {
+      context.commit('clearCart');
     }
   },
   modules: {

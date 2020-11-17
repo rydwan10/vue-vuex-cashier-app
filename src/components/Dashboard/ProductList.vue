@@ -30,9 +30,9 @@ export default {
 .product-list-container {
   width: 67%;
   background: #ffffff;
-  box-shadow: 4px 4px 2px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 4px 12px 1px rgba(0, 0, 0, 0.122);
   height: 80%;
-  padding: 1.4rem;
+  padding: 1.8rem;
   border-radius: 12px;
 }
 

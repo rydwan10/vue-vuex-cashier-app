@@ -130,7 +130,7 @@ export default {
 .buy-qty {
   width: 50%;
   border-radius: 6px;
-  border: 2px solid #a3a5af;
+  border: 1px solid #a3a5af;
   font-size: 1.6rem;
   text-align: center;
   outline-color: #91a2f6;

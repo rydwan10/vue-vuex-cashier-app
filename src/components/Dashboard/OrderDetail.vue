@@ -10,6 +10,11 @@
       <div class="separator"></div>
 
       <div class="ordered-products">
+        <div v-if="getAllCart.length > 0" class="clear-cart-button-wrapper">
+          <button class="clear-cart-button" @click="clearCart">
+            Clear Cart
+          </button>
+        </div>
         <ul v-if="getAllCart.length > 0">
           <li v-for="item in getAllCart" :key="item.id" class="item">
             <button
@@ -48,7 +53,14 @@
       <label for="pay">Pay</label>
       <div class="input-wrapper">
         <span class="sign">$</span>
-        <input type="number" min="0" name="pay" id="pay" v-model="pay" />
+        <input
+          :readonly="getAllCart.length <= 0"
+          type="number"
+          min="0"
+          name="pay"
+          id="pay"
+          v-model="pay"
+        />
       </div>
       <label for="change">Change</label>
       <span v-if="calculateTotal < 0" class="text-red"
@@ -57,6 +69,7 @@
       <div class="input-wrapper">
         <span class="sign">$</span>
         <input
+          readonly
           type="number"
           min="0"
           name="change"
@@ -69,7 +82,14 @@
       <label for="discount">Discount</label>
       <div class="input-wrapper">
         <span class="sign__percent">%</span>
-        <input type="number" min="0" name="discount" id="discount" value="0" />
+        <input
+          :readonly="getAllCart.length <= 0"
+          type="number"
+          min="0"
+          name="discount"
+          id="discount"
+          value="0"
+        />
       </div>
       <label for="total">Total</label>
       <div class="input-wrapper total-wrapper">
@@ -77,10 +97,10 @@
         <input type="number" min="0" name="total" id="total" />
       </div>
       <button
-        :disabled="calculateTotal <= 0"
+        :disabled="calculateTotal < 0 || getAllCart.length <= 0"
         type="submit"
         :class="
-          calculateTotal <= 0
+          calculateTotal < 0 || getAllCart.length <= 0
             ? 'continue-payment-button disabled-button'
             : 'continue-payment-button'
         "
@@ -111,10 +131,13 @@ export default {
     deleteItemFromCart: function (id) {
       this.$store.dispatch("DELETE_ITEM_FROM_CART", id);
     },
+    clearCart: function () {
+      this.$store.dispatch("CLEAR_CART");
+    },
   },
   computed: {
     ...mapGetters(["getAllCart", "getTotalPrice"]),
-    calculateTotal() {
+    calculateTotal: function () {
       return this.pay - this.getTotalPrice;
     },
   },
@@ -125,7 +148,7 @@ export default {
 .order-detail-container {
   width: 30%;
   background: #ffffff;
-  box-shadow: 4px 4px 2px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 4px 12px 1px rgba(0, 0, 0, 0.122);
   height: 80%;
   padding: 1.7rem;
   border-radius: 12px;
@@ -170,10 +193,9 @@ input[type="text"] {
   display: block;
   font-size: 1.3rem;
   font-family: inherit;
-  border: 2px solid #cecece;
+  border: 1px solid #cecece;
   padding: 6px 12px;
   width: 100%;
-  /* margin-bottom: 12px; */
   outline-color: #91a2f6;
   border-radius: 4px;
 }
@@ -184,7 +206,6 @@ input[type="number"] {
   border: 2px solid #cecece;
   padding: 6px 12px;
   width: 100%;
-  /* margin-bottom: 12px; */
   outline-color: #91a2f6;
   border-radius: 4px;
 }
@@ -206,19 +227,39 @@ input[type="number"] {
   cursor: not-allowed;
 }
 
+.clear-cart-button-wrapper {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
 .delete-item-button {
   color: #fff;
   border: 0;
   background: rgb(246, 38, 38);
   padding: 0.3rem 0.5rem;
   display: block;
-  margin: 0 0 0.3rem auto;
+  margin: 0 0 0.8rem auto;
   border-radius: 4px;
 }
 
 .delete-item-button:hover {
   background: rgb(250, 75, 75);
   cursor: pointer;
+}
+
+.clear-cart-button {
+  color: #fff;
+  border: 0;
+  background: rgb(246, 38, 38);
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+}
+
+.clear-cart-button:hover {
+  cursor: pointer;
+  background: rgb(253, 17, 17);
 }
 
 .item {
@@ -242,10 +283,9 @@ input[type="number"] {
 }
 
 .separator {
-  padding: 0.05rem;
-  background: rgb(209, 209, 209);
+  padding: 1px;
+  background: rgb(228, 228, 228);
   width: 100%;
-  border-radius: 2px;
   margin: 1.2rem 0px;
 }
 
