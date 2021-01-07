@@ -2,7 +2,11 @@
   <div class="card-list">
     <div class="card">
       <div class="card-header">
-        <img src="../../assets/logo.png" alt="vue-image" width="64px" />
+        <img
+          class="card-image"
+          :src="getProductImage(product.image)"
+          alt="vue-image"
+        />
       </div>
       <div class="card-body">
         <div class="card-title">
@@ -58,18 +62,22 @@ export default {
     };
   },
   methods: {
-    increment: function () {
+    increment: function() {
       this.qty = this.qty += 1;
     },
-    decrement: function () {
+    decrement: function() {
       this.qty = this.qty -= 1;
     },
-    calcSubTotal: function (price) {
+    calcSubTotal: function(price) {
       return this.qty * price;
     },
 
+    getProductImage: function(img) {
+      return require("../../assets/img/products/fish/" + img);
+    },
+
     // Dispatch actions here...
-    addToCart: function (product) {
+    addToCart: function(product) {
       if (this.qty == 0) {
         return;
       }
@@ -95,29 +103,41 @@ export default {
 }
 .card {
   box-shadow: 0px 4px 7px 1px rgba(0, 0, 0, 0.2);
-  padding: 1.2rem 0px 0.4rem;
+  /* padding: 1.2rem 0px 0.4rem; */
+  padding-bottom: 0.7rem;
   border-radius: 6px;
+  overflow: hidden;
 }
 
 .card-header {
   text-align: center;
-  height: 6rem;
+  /* height: 6rem; */
+  /* width: 240px; */
+  height: 240px;
+  overflow: hidden;
+  display: flex;
+}
+
+.card-image {
+  width: 100%;
+  object-fit: cover;
 }
 
 .product-price {
-  font-size: 1.2rem;
+  font-size: 1rem;
+  font-weight: 500;
   color: rgb(112, 112, 112);
 }
 
 .card-body {
   width: 100%;
-  padding: 1rem 0;
+  padding: 0.4rem 0;
 }
 
 .card-title {
   text-align: left !important;
   padding: 0.8rem;
-  font-weight: 500;
+  font-weight: 700;
   font-size: 1.3rem;
 }
 

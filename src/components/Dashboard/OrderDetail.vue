@@ -1,8 +1,8 @@
 <template>
   <div class="order-detail-container">
     <form v-on:submit="handleFormSubmit">
-      <label for="invoice">Invoice</label>
-      <input type="text" id="invoice" name="invoice" />
+      <label for="invoice">Invoice Number</label>
+      <input type="text" id="invoice" name="invoice" :value="generateInvoice" />
       <br />
       <label for="customer">Customer Name</label>
       <input type="text" id="customer" name="customer" />
@@ -21,7 +21,25 @@
               v-on:click.prevent="deleteItemFromCart(item.id)"
               class="delete-item-button"
             >
-              Delete
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-trash-2"
+              >
+                <polyline points="3 6 5 6 21 6" />
+                <path
+                  d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                />
+                <line x1="10" y1="11" x2="10" y2="17" />
+                <line x1="14" y1="11" x2="14" y2="17" />
+              </svg>
             </button>
             <div class="item-product">
               <p>{{ item.name }}</p>
@@ -35,6 +53,7 @@
         </ul>
         <div v-else class="no-item">No items...</div>
       </div>
+      <div class="total-items">Total Items: {{ getAllCart.length }}</div>
 
       <div class="separator"></div>
 
@@ -113,6 +132,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import moment from "moment";
 
 export default {
   name: "OrderDetail",
@@ -125,20 +145,59 @@ export default {
     };
   },
   methods: {
-    handleFormSubmit: function (event) {
+    handleFormSubmit: function(event) {
       event.preventDefault();
     },
-    deleteItemFromCart: function (id) {
+    deleteItemFromCart: function(id) {
       this.$store.dispatch("DELETE_ITEM_FROM_CART", id);
     },
-    clearCart: function () {
+    clearCart: function() {
       this.$store.dispatch("CLEAR_CART");
     },
   },
   computed: {
-    ...mapGetters(["getAllCart", "getTotalPrice"]),
-    calculateTotal: function () {
+    ...mapGetters(["getAllCart", "getTotalPrice", "getAllHistory"]),
+
+    calculateTotal: function() {
       return this.pay - this.getTotalPrice;
+    },
+    generateInvoice: function() {
+      // const date = moment().format("yyyyMMDD");
+      // let invoice = "";
+
+      // const stringLatestInvoice = this.getAllHistory[
+      //   this.getAllHistory.length - 1
+      // ].invoice.substring(8);
+
+      // if (latestInvoiceCount.toString().length == 1) {
+      //   console.log("hai madafaka");
+      // }
+
+      // const latestInvoiceCount = parseInt(stringLatestInvoice) + 1;
+      const date = moment().format("yyyyMMDD");
+      let invoice = `INV${date}0000001`;
+
+      // const stringLatestInvoiceCount = this.getAllHistory[
+      //   this.getAllHistory.length - 1
+      // ].invoice.substring(8);
+
+      // const latestInvoice = this.getAllHistory[
+      //   this.getAllHistory.length - 1
+      // ].invoice.substring(0, 8);
+
+      // let counter = "";
+      // let newInvoice = "";
+
+      // const today = moment().format("yyyyMMDD");
+      // if (today === latestInvoice) {
+      //   newInvoice = `INV${moment().format("yyyyMMDD")}${latestInvoiceCount}`;
+      // } else {
+      // }
+
+      // 1. Jika tanggal invoice yang terakhir ditambahkan sama dengan tanggal sekarang, maka tambahkan counter #000001 #000002 dst
+      // 2. Jika tanggal nya beda alias baru invoice diulang dari awal
+
+      return invoice;
     },
   },
 };
@@ -162,36 +221,35 @@ label {
 
 .sign {
   font-weight: 400;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   padding: 0.4rem;
 }
 
 .sign__percent {
   font-weight: 400;
-  font-size: 1.3rem;
   padding: 0.2rem;
+  font-size: 1.2rem;
 }
 
 .input-wrapper {
   display: flex;
   align-items: center;
   margin-bottom: 0.8rem;
-  background: #dedede;
+  background: #ebebeb;
   border-radius: 4px;
 }
 
 input[type="number"]#total {
-  width: 87%;
+  width: 100%;
 }
 
 .total-wrapper {
-  background: #f3f0f0;
-  height: 6rem;
+  background: #ebebeb;
 }
 
 input[type="text"] {
   display: block;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-family: inherit;
   border: 1px solid #cecece;
   padding: 6px 12px;
@@ -201,9 +259,9 @@ input[type="text"] {
 }
 input[type="number"] {
   display: block;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-family: inherit;
-  border: 2px solid #cecece;
+  border: 1px solid #cecece;
   padding: 6px 12px;
   width: 100%;
   outline-color: #91a2f6;
@@ -212,14 +270,13 @@ input[type="number"] {
 .continue-payment-button {
   padding: 14px 25px;
   width: 100%;
-  background-color: #51ff7b;
+  background-color: #1dfd53;
   color: #ffffff;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  box-shadow: 2px 2px rgba(0, 0, 0, 0.4);
   margin-top: 1.3rem;
-  font-size: 1rem;
+  font-size: 1.1rem;
 }
 
 .disabled-button {
@@ -238,7 +295,7 @@ input[type="number"] {
   color: #fff;
   border: 0;
   background: rgb(246, 38, 38);
-  padding: 0.3rem 0.5rem;
+  padding: 0.3rem 0.8rem;
   display: block;
   margin: 0 0 0.8rem auto;
   border-radius: 4px;
@@ -291,6 +348,12 @@ input[type="number"] {
 
 .text-red {
   color: red;
+}
+
+.total-items {
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding-top: 1rem;
 }
 
 @media (max-width: 1064px) {
