@@ -44,7 +44,7 @@ export default new Vuex.Store({
     history: [
       {
         id: uuidv4(),
-        invoice: "202011020000001",
+        invoice: "INV202011020000001",
         customerName: "Muhammad Rydwan",
         items: [
           {
@@ -81,7 +81,7 @@ export default new Vuex.Store({
       },
       {
         id: uuidv4(),
-        invoice: "202011010000002 ",
+        invoice: "INV202011010000002",
         customerName: "Jhon Doe",
         items: [
           {
@@ -118,7 +118,7 @@ export default new Vuex.Store({
       },
       {
         id: uuidv4(),
-        invoice: "202011010000033 ",
+        invoice: "INV202011010000033",
         customerName: "Anon",
         items: [
           {
@@ -155,7 +155,81 @@ export default new Vuex.Store({
       },
       {
         id: uuidv4(),
-        invoice: "202011010000012 ",
+        invoice: "INV202011010000012",
+        customerName: "Albert",
+        items: [
+          {
+            id: uuidv4(),
+            productId: uuidv4(),
+            name: "Macarrel",
+            price: 100,
+            qty: 3,
+            subTotal: 300,
+          },
+          {
+            id: uuidv4(),
+            productId: uuidv4(),
+            name: "Sardines",
+            price: 200,
+            qty: 1,
+            subTotal: 200,
+          },
+          {
+            id: uuidv4(),
+            productId: uuidv4(),
+            name: "Crab",
+            price: 400,
+            qty: 3,
+            subTotal: 1200,
+          },
+        ],
+        totalPrice: 1700,
+        pay: 2000,
+        change: 300,
+        discount: 0,
+        total: 2000,
+        createdAt: "2020-11-01",
+      },
+      {
+        id: uuidv4(),
+        invoice: "INV202101090000012",
+        customerName: "Albert",
+        items: [
+          {
+            id: uuidv4(),
+            productId: uuidv4(),
+            name: "Macarrel",
+            price: 100,
+            qty: 3,
+            subTotal: 300,
+          },
+          {
+            id: uuidv4(),
+            productId: uuidv4(),
+            name: "Sardines",
+            price: 200,
+            qty: 1,
+            subTotal: 200,
+          },
+          {
+            id: uuidv4(),
+            productId: uuidv4(),
+            name: "Crab",
+            price: 400,
+            qty: 3,
+            subTotal: 1200,
+          },
+        ],
+        totalPrice: 1700,
+        pay: 2000,
+        change: 300,
+        discount: 0,
+        total: 2000,
+        createdAt: "2020-11-01",
+      },
+      {
+        id: uuidv4(),
+        invoice: "INV202101090000013",
         customerName: "Albert",
         items: [
           {

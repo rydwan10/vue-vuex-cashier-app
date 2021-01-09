@@ -1,6 +1,6 @@
 <template>
   <div class="order-detail-container">
-    <form v-on:submit="handleFormSubmit">
+    <form v-on:submit.prevent="handleFormSubmit">
       <label for="invoice">Invoice Number</label>
       <input type="text" id="invoice" name="invoice" :value="generateInvoice" />
       <br />
@@ -11,7 +11,7 @@
 
       <div class="ordered-products">
         <div v-if="getAllCart.length > 0" class="clear-cart-button-wrapper">
-          <button class="clear-cart-button" @click="clearCart">
+          <button class="clear-cart-button" @click.prevent="clearCart">
             Clear Cart
           </button>
         </div>
@@ -42,7 +42,7 @@
               </svg>
             </button>
             <div class="item-product">
-              <p>{{ item.name }}</p>
+              <p class="item-name">{{ item.name }}</p>
               <p>${{ item.price }}</p>
             </div>
             <div class="item-buy">
@@ -107,13 +107,19 @@
           min="0"
           name="discount"
           id="discount"
-          value="0"
+          v-model="discount"
         />
       </div>
       <label for="total">Total</label>
       <div class="input-wrapper total-wrapper">
         <span class="sign">$</span>
-        <input type="number" min="0" name="total" id="total" />
+        <input
+          type="number"
+          min="0"
+          name="total"
+          id="total"
+          :value="calculateTotalWithDiscount"
+        />
       </div>
       <button
         :disabled="calculateTotal < 0 || getAllCart.length <= 0"
@@ -142,6 +148,7 @@ export default {
       pay: null,
       change: null,
       total: null,
+      discount: 0,
     };
   },
   methods: {
@@ -162,42 +169,78 @@ export default {
       return this.pay - this.getTotalPrice;
     },
     generateInvoice: function() {
-      // const date = moment().format("yyyyMMDD");
-      // let invoice = "";
+      const today = moment().format("yyyyMMDD");
+      let leadingZeros = "";
 
-      // const stringLatestInvoice = this.getAllHistory[
-      //   this.getAllHistory.length - 1
-      // ].invoice.substring(8);
+      const latestInvoiceDate = this.getAllHistory[
+        this.getAllHistory.length - 1
+      ].invoice.substring(3, 11);
 
-      // if (latestInvoiceCount.toString().length == 1) {
-      //   console.log("hai madafaka");
-      // }
+      const latestInvoiceCount = this.getAllHistory[
+        this.getAllHistory.length - 1
+      ].invoice.substring(11);
 
-      // const latestInvoiceCount = parseInt(stringLatestInvoice) + 1;
-      const date = moment().format("yyyyMMDD");
-      let invoice = `INV${date}0000001`;
+      let intLatestInvoiceCount = parseInt(latestInvoiceCount);
 
-      // const stringLatestInvoiceCount = this.getAllHistory[
-      //   this.getAllHistory.length - 1
-      // ].invoice.substring(8);
+      if (today == latestInvoiceDate) {
+        intLatestInvoiceCount += 1;
+      } else {
+        intLatestInvoiceCount = 1;
+      }
 
-      // const latestInvoice = this.getAllHistory[
-      //   this.getAllHistory.length - 1
-      // ].invoice.substring(0, 8);
+      let strLatestInvoiceCount = intLatestInvoiceCount.toString();
 
-      // let counter = "";
-      // let newInvoice = "";
+      switch (strLatestInvoiceCount.length) {
+        case 1:
+          // console.log("case 1");
+          leadingZeros = "000000";
+          break;
+        case 2:
+          // console.log("case 2");
+          leadingZeros = "00000";
+          break;
 
-      // const today = moment().format("yyyyMMDD");
-      // if (today === latestInvoice) {
-      //   newInvoice = `INV${moment().format("yyyyMMDD")}${latestInvoiceCount}`;
-      // } else {
-      // }
+        case 3:
+          // console.log("case 3");
+          leadingZeros = "0000";
+          break;
+
+        case 4:
+          // console.log("case 4");
+          leadingZeros = "000";
+          break;
+
+        case 5:
+          // console.log("case 5");
+          leadingZeros = "00";
+          break;
+
+        case 6:
+          // console.log("case 6");
+          leadingZeros = "0";
+          break;
+
+        case 7:
+          // console.log("case 7");
+          leadingZeros = "";
+          break;
+
+        default:
+          leadingZeros = "";
+          break;
+      }
 
       // 1. Jika tanggal invoice yang terakhir ditambahkan sama dengan tanggal sekarang, maka tambahkan counter #000001 #000002 dst
       // 2. Jika tanggal nya beda alias baru invoice diulang dari awal
 
+      let invoice = `INV${today}${leadingZeros}${intLatestInvoiceCount}`;
       return invoice;
+    },
+    calculateTotalWithDiscount: function() {
+      let discountTotal = (this.getTotalPrice * this.discount) / 100;
+      let totalWithDiscount = this.getTotalPrice - discountTotal;
+      console.log(discountTotal, totalWithDiscount);
+      return totalWithDiscount;
     },
   },
 };
@@ -337,6 +380,10 @@ input[type="number"] {
   display: flex;
   justify-content: space-between;
   font-weight: bold;
+}
+
+.item-name {
+  font-size: 1.5rem;
 }
 
 .separator {

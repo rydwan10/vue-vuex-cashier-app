@@ -103,7 +103,6 @@ export default {
 }
 .card {
   box-shadow: 0px 4px 7px 1px rgba(0, 0, 0, 0.2);
-  /* padding: 1.2rem 0px 0.4rem; */
   padding-bottom: 0.7rem;
   border-radius: 6px;
   overflow: hidden;
@@ -111,8 +110,6 @@ export default {
 
 .card-header {
   text-align: center;
-  /* height: 6rem; */
-  /* width: 240px; */
   height: 240px;
   overflow: hidden;
   display: flex;
